@@ -76,6 +76,41 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void APlayerCharacter::StartSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void APlayerCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
+}
+
+void APlayerCharacter::InteractTrace()
+{
+	FVector Loc;
+	FRotator Rot;
+	GetController()->GetPlayerViewPoint(Loc, Rot);
+
+	FVector Start = Loc;
+	FVector End = Start + (Rot.Vector() * TraceDistance);
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+
+	const bool DidHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Camera, Params);
+
+	if (DidHit)
+	{
+		if (HitResult.GetActor()->Implements<UInteractInterface>())
+		{
+			IInteractInterface::Execute_Interact(HitResult.GetActor());
+		}
+	}
+}
+
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -95,6 +130,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(IA_Jump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		EnhancedInputComponent->BindAction(IA_Sprint, ETriggerEvent::Triggered, this, &APlayerCharacter::StartSprint);
+		EnhancedInputComponent->BindAction(IA_Sprint, ETriggerEvent::Completed, this, &APlayerCharacter::StopSprint);
+
+		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Triggered, this, &APlayerCharacter::InteractTrace);
 	}
 
 }

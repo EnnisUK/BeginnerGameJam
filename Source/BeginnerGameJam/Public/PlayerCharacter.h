@@ -5,13 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Interfaces/InteractInterface.h"
 #include "PlayerCharacter.generated.h"
+
+
 
 
 class UInputAction;
 
 UCLASS()
-class BEGINNERGAMEJAM_API APlayerCharacter : public ACharacter
+class BEGINNERGAMEJAM_API APlayerCharacter : public ACharacter, public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -32,14 +35,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_Jump;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Sprint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Interact;
+
 	APlayerCameraManager* CameraController;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Player Movement Functions
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void StartSprint();
+	void StopSprint();
+
+
+	//Player Interact Function
+
+	void InteractTrace();
 
 public:	
 	// Called every frame
@@ -57,4 +75,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 		float MinPitch;
 
+	// Character Variables
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+		float SprintSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+		float DefaultSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+		float TraceDistance;
 };
