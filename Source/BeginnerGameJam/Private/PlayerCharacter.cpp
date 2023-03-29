@@ -140,7 +140,6 @@ void APlayerCharacter::InteractTrace()
 			IInteractInterface::Execute_Interact(HitResult.GetActor());
 		}
 	}
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 }
 
 void APlayerCharacter::Expload()
