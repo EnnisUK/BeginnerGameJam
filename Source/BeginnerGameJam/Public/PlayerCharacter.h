@@ -88,10 +88,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Stable(FVector StopMovement);
 
-
-	UFUNCTION(BlueprintCallable)
-	void Laser();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float LaserDistance;
 
