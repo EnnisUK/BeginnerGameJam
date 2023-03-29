@@ -47,6 +47,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_PossessMainCharacter;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_SmallRobot_Grab;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Drone_FlyUp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Drone_FlyDown;
+
 	APlayerCameraManager* CameraController;
 
 protected:
@@ -59,7 +68,6 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void StartSprint();
 	void StopSprint();
-	void CheckJump();
 
 	UPROPERTY()
 	bool Jumping;
@@ -69,7 +77,13 @@ protected:
 	UPROPERTY()
 	int JumpCount;
 
-	// Player Posses Function
+	// Drone Movement
+
+	void FlyUp();
+	void FlyDown();
+	UFUNCTION(BlueprintCallable)
+	void Stable(FVector StopMovement);
+	
 
 	
 

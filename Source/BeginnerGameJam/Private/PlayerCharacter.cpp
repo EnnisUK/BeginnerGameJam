@@ -99,6 +99,21 @@ void APlayerCharacter::Landed(const FHitResult& Hit)
 	JumpCount = 0;
 }
 
+void APlayerCharacter::FlyUp()
+{
+	LaunchCharacter(FVector(0, 0, 300), false, true);
+}
+
+void APlayerCharacter::FlyDown()
+{
+	LaunchCharacter(FVector(0, 0, -300), false, true);
+}
+
+void APlayerCharacter::Stable(FVector StopMovement)
+{
+	GetCharacterMovement()->Velocity = StopMovement;
+}
+
 
 void APlayerCharacter::InteractTrace()
 {
@@ -184,6 +199,12 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 
 		// All Characters
+
+
+		//Drone
+
+		EnhancedInputComponent->BindAction(IA_Drone_FlyUp, ETriggerEvent::Triggered, this, &APlayerCharacter::FlyUp);
+		EnhancedInputComponent->BindAction(IA_Drone_FlyDown, ETriggerEvent::Triggered, this, &APlayerCharacter::FlyDown);
 
 	}
 
