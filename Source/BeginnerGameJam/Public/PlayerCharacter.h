@@ -59,10 +59,19 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void StartSprint();
 	void StopSprint();
+	void CheckJump();
+
+	UPROPERTY()
+	bool Jumping;
+
+	virtual void Landed(const FHitResult& Hit) override;
+
+	UPROPERTY()
+	int JumpCount;
 
 	// Player Posses Function
 
-	void PossessPlayer();
+	
 
 
 	//Player Interact Function
