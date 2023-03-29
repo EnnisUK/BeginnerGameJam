@@ -27,8 +27,9 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	if ( PlayerController == Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -41,6 +42,9 @@ void APlayerCharacter::BeginPlay()
 
 	CameraController->ViewPitchMax = MaxPitch;
 	CameraController->ViewPitchMin = MinPitch;
+
+
+	
 
 }
 
@@ -86,6 +90,7 @@ void APlayerCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
 }
+
 
 void APlayerCharacter::InteractTrace()
 {
@@ -139,6 +144,8 @@ void APlayerCharacter::Expload()
 		}
 	}
 	Destroy();
+
+	
 }
 
 // Called every frame
@@ -169,6 +176,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// BasicCharacter
 
 		EnhancedInputComponent->BindAction(IA_Expload, ETriggerEvent::Triggered, this, &APlayerCharacter::Expload);
+
+
+		// All Characters
 
 	}
 

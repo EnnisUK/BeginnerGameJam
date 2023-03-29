@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_Expload;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_PossessMainCharacter;
+
 	APlayerCameraManager* CameraController;
 
 protected:
@@ -56,6 +59,10 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void StartSprint();
 	void StopSprint();
+
+	// Player Posses Function
+
+	void PossessPlayer();
 
 
 	//Player Interact Function
@@ -103,4 +110,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
 		class USoundAttenuation* SA_Explosion;
+
+	APlayerController* PlayerController;
 };
