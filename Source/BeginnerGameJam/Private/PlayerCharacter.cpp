@@ -114,6 +114,29 @@ void APlayerCharacter::Stable(FVector StopMovement)
 	GetCharacterMovement()->Velocity = StopMovement;
 }
 
+void APlayerCharacter::Laser()
+{
+
+	FHitResult Hit;
+	FVector Start = GetMesh()->GetSocketLocation("Laser");
+	FVector End = Start + GetActorForwardVector() * LaserDistance;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	const bool DidHitLaser = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility, Params);
+
+	if (DidHitLaser)
+	{
+		if (Hit.GetActor()->ActorHasTag("LaserPannel"))
+		{
+			Hit.GetActor()->Destroy();
+		}
+	}
+
+	
+
+}
+
 
 void APlayerCharacter::InteractTrace()
 {

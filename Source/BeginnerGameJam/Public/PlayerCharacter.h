@@ -56,6 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_Drone_FlyDown;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Drone_Laser;
+
 	APlayerCameraManager* CameraController;
 
 protected:
@@ -77,13 +80,20 @@ protected:
 	UPROPERTY()
 	int JumpCount;
 
-	// Drone Movement
+	// Drone
 
 	void FlyUp();
 	void FlyDown();
+
 	UFUNCTION(BlueprintCallable)
 	void Stable(FVector StopMovement);
-	
+
+
+	UFUNCTION(BlueprintCallable)
+	void Laser();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float LaserDistance;
 
 	
 
