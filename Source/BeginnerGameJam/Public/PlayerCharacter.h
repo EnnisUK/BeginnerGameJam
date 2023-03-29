@@ -127,7 +127,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 		float DefaultSpeed;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category = "Player")
 		float TraceDistance;
 
 	// Basic Character Variables
