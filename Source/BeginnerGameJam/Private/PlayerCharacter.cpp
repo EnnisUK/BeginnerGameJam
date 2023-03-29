@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 // Sets default values
@@ -100,7 +101,7 @@ void APlayerCharacter::InteractTrace()
 	Params.AddIgnoredActor(this);
 
 
-	const bool DidHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Camera, Params);
+	const bool DidHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, Params);
 
 	if (DidHit)
 	{
@@ -109,6 +110,35 @@ void APlayerCharacter::InteractTrace()
 			IInteractInterface::Execute_Interact(HitResult.GetActor());
 		}
 	}
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
+}
+
+void APlayerCharacter::Expload()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionVFX, GetActorLocation(), GetActorRotation());
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ExplosionSFX, GetActorLocation(), GetActorRotation(), 0.5, 1, 0.0f, SA_Explosion);
+	
+
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+
+	TArray<FHitResult> HitArray;
+
+	const bool Hit = UKismetSystemLibrary::SphereTraceMulti(GetWorld(), GetActorLocation(), GetActorLocation(), 300,
+	UEngineTypes::ConvertToTraceType(ECC_Camera), false, ActorsToIgnore, EDrawDebugTrace::None, HitArray, true);
+
+	if (Hit)
+	{
+		for (const FHitResult HitResult : HitArray)
+		{
+			if (HitResult.GetActor()->ActorHasTag("Destroyable"))
+			{
+				HitResult.GetActor()->Destroy();
+				
+			}
+		}
+	}
+	Destroy();
 }
 
 // Called every frame
@@ -135,6 +165,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(IA_Sprint, ETriggerEvent::Completed, this, &APlayerCharacter::StopSprint);
 
 		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Triggered, this, &APlayerCharacter::InteractTrace);
+
+		// BasicCharacter
+
+		EnhancedInputComponent->BindAction(IA_Expload, ETriggerEvent::Triggered, this, &APlayerCharacter::Expload);
+
 	}
 
 }

@@ -25,9 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 		class UInputMappingContext* PlayerMappingContext;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
-		class UInputMappingContext* BasicCharacterMappingContext;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_Move;
 
@@ -43,6 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		UInputAction* IA_Interact;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* IA_Expload;
 
 	APlayerCameraManager* CameraController;
 
@@ -61,6 +61,11 @@ protected:
 	//Player Interact Function
 
 	void InteractTrace();
+
+
+	// Basic Character Functions
+
+	void Expload();
 
 public:	
 	// Called every frame
@@ -88,4 +93,14 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 		float TraceDistance;
+
+	// Basic Character Variables
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
+		class UParticleSystem* ExplosionVFX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
+		class USoundBase* ExplosionSFX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
+		class USoundAttenuation* SA_Explosion;
 };
