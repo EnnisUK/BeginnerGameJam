@@ -79,6 +79,10 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisValue.X);
 		AddControllerPitchInput(LookAxisValue.Y);
 	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("ControllerNotValid"));
+	}
 }
 
 void APlayerCharacter::StartSprint()
